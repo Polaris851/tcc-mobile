@@ -38,7 +38,6 @@ export function Month() {
 
             const response = await api.get("/events")
             setDayInfo(response.data)
-            console.log(response.data)
         } catch (error) {
             console.log(error)
             Alert.alert("Ops", "Não foi possível carregar as informações dos eventos.")

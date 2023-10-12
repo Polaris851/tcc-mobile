@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { TouchableOpacity, Text} from 'react-native';
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { useState } from 'react'
+import { TouchableOpacity, Text} from 'react-native'
+import DateTimePickerModal from "react-native-modal-datetime-picker"
 
 interface Props {
     title: string,
