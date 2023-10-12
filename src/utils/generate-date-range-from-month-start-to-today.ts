@@ -1,6 +1,6 @@
 import dayjs from "dayjs"
 
-export function generateRangeDatesFromMonthStart() {
+export function generateDateRangeFromMonthStartToToday() {
     const startDate = dayjs().startOf('month')
     const endDate = new Date()
 

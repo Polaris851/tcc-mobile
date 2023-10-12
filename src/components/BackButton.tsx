@@ -14,8 +14,7 @@ export function BackButton({title}: Props) {
             <View className='left-5 absolute'>
                 <TouchableOpacity
                 activeOpacity={0.7}
-                onPress={goBack}
-                >
+                onPress={goBack} >
                     <Feather 
                     name="arrow-left" 
                     size={22}

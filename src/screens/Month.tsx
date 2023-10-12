@@ -1,19 +1,61 @@
-import { useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import {Calendar} from 'react-native-calendars';
-import { Feather } from '@expo/vector-icons'; 
+import { useState, useCallback } from 'react'
+import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native'
+import { useNavigation, useFocusEffect } from '@react-navigation/native'
+import {Calendar} from 'react-native-calendars'
+import { Feather } from '@expo/vector-icons'
 
 import dayjs from 'dayjs';
 
-import { Header } from '../components/Header';
-import { SliderButton } from '../components/SliderButton';
+import { api } from '../lib/axios'
+import { Header } from '../components/Header'
+import { SliderButton } from '../components/SliderButton'
+import { Calendars } from '../components/Calendars'
+import { CardEvent } from '../components/CardEvent'
+import { Loading } from '../components/Loading'
+
+interface DayInfoProps {
+    id: string,
+    title: string,
+    discipline: string,
+    dueDate: string,
+}
+
+type MyDataArray = DayInfoProps[];
 
 export function Month() {
-    const month = dayjs().format('MMMM');
+    const month = dayjs().format('MMMM')
 
-    const { navigate } = useNavigation();
-    const [selected, setSelected] = useState('');
+    const { navigate } = useNavigation()
+
+    const [selected, setSelected] = useState('')
+    const [ loading, setLoading ] = useState(true)
+    const [ dayInfo, setDayInfo ] = useState<MyDataArray | null>(null)
+
+
+    async function fetchEvents() {
+        try {
+           setLoading(true)
+
+            const response = await api.get("/events")
+            setDayInfo(response.data)
+            console.log(response.data)
+        } catch (error) {
+            console.log(error)
+            Alert.alert("Ops", "Não foi possível carregar as informações dos eventos.")
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    useFocusEffect(useCallback(() => {
+        fetchEvents()
+    }, []))
+
+    if(loading) {
+        return(
+            <Loading />
+        )
+    }
 
     return (
         <View className='flex-1 bg-background pt-6'>
@@ -25,15 +67,7 @@ export function Month() {
 
                 <SliderButton />
 
-                <Calendar
-                className='my-3'
-                onDayPress={day => {
-                    setSelected(day.dateString);
-                }}
-                markedDates={{
-                    [selected]: {selected: true, disableTouchEvent: true, selectedColor: "#306D9C"}
-                }}
-                />
+               {/* <Calendars /> */}
 
                 <View className='bg-sky-100 px-5 py-6 h-screen'>
                     <View className='flex-row justify-between items-center'>
@@ -49,6 +83,19 @@ export function Month() {
                             color="black" />
                         </TouchableOpacity>
                     </View>
+
+                    
+                {
+                    dayInfo?.map(a => (
+                        <CardEvent 
+                        key={a.id}
+                        title={a.title}
+                        discipline={a.discipline}
+                        dueDate={dayjs(a.dueDate).format('DD/MM')}
+                        />
+                    ))
+
+                }
                 </View> 
             </ScrollView>
         </View>

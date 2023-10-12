@@ -1,14 +1,14 @@
-import { View, Text, ScrollView} from 'react-native';
+import { View, Text, ScrollView} from 'react-native'
 
-import dayjs from 'dayjs';
+import dayjs from 'dayjs'
 
-import { Header } from '../components/Header';
-import { HeatMap } from '../components/HeatMap';
-import { User } from '../components/User';
+import { Header } from '../components/Header'
+import { HeatMap } from '../components/HeatMap'
+import { User } from '../components/User'
 
 
 export function Profile() {
-    const month = dayjs().format('MMMM');
+    const month = dayjs().format('MMMM')
 
     return(
         <View className='flex-1 bg-background pt-6'>

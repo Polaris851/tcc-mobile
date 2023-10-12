@@ -1,12 +1,36 @@
-import { useState } from 'react';
-import { View, ScrollView, Text, TouchableOpacity } from 'react-native';
-import { TextInput, Button } from 'react-native-paper';
-import { Feather } from '@expo/vector-icons'; 
+import { useState } from 'react'
+import { View, ScrollView, Text, TouchableOpacity, Alert } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { TextInput, Button } from 'react-native-paper'
+import { Feather } from '@expo/vector-icons'
 
-import { BackButton } from '../components/BackButton';
+import { api } from '../lib/axios'
+import { BackButton } from '../components/BackButton'
 
 export function FormWeek() {
-    const [title, setTitle] = useState("");
+    const { navigate } = useNavigation()
+
+    const [title, setTitle] = useState("")
+    const [description, setDescription] = useState('')
+
+    async function handleCreateNewWeekActivity() {
+        try {
+            if(!title.trim()) {
+                Alert.alert("Semana", "Informe os dados da atividade da semana.")
+                return
+            }
+            
+            await api.post("/weeklyactivities", {title, description})
+
+            setTitle("")
+            setDescription("")
+
+            Alert.alert("Semana", "Atividade criada com sucesso!", [{ text: "OK", onPress: () => { navigate('week')} }])
+        } catch (error) {
+            console.log(error)
+            Alert.alert("Ops", "Não foi possível criar a atividade.")
+        }
+    }
 
     return(
         <View className='flex-1 bg-background pt-6'>
@@ -75,8 +99,8 @@ export function FormWeek() {
 
                 <TextInput
                 label="Descrição"
-                value={title}
-                onChangeText={title => setTitle(title)}
+                value={description}
+                onChangeText={description => setDescription(description)}
                 className='w-auto bg-background'
                 mode='outlined'
                 outlineColor='#306D9C'
@@ -84,10 +108,9 @@ export function FormWeek() {
                 />
                 
                 <Button 
-                onPress={() => console.log('Pressed')}
+                onPress={handleCreateNewWeekActivity}
                 mode="contained" 
-                className='w-auto h-12 bg-primary justify-center rounded-lg'
-                >
+                className='w-auto h-12 bg-primary justify-center rounded-lg'>
                     Salvar
                 </Button>
             </ScrollView>

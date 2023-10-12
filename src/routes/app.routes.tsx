@@ -73,7 +73,7 @@ export function AppRoutes() {
     return(
         <Tab.Navigator screenOptions={{ headerShown: false }}>
              <Tab.Screen
-            name='month'
+            name='monthweek'
             component={MonthStack}
             options={{
                 tabBarLabel: 'Meu Mês',
@@ -86,7 +86,7 @@ export function AppRoutes() {
             }}
             />
             <Tab.Screen
-            name='day'
+            name='myday'
             component={DayStack}
             options={{
                 tabBarLabel: 'Meu Dia',
@@ -99,7 +99,7 @@ export function AppRoutes() {
             }}
             />
             <Tab.Screen
-            name='profile'
+            name='profilestudent'
             component={ProfileStack}
             options={{
                 tabBarLabel: 'Perfil',

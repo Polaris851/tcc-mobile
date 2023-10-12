@@ -1,18 +1,79 @@
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { ProgressBar } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
-import { Feather } from '@expo/vector-icons'; 
+import { useState, useCallback } from 'react'
+import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native'
+import { ProgressBar } from 'react-native-paper'
+import { useNavigation, useFocusEffect } from '@react-navigation/native'
+import { Feather } from '@expo/vector-icons'
 
-import dayjs from 'dayjs';
+import dayjs from 'dayjs'
 
-import { Header } from '../components/Header';
-import { Checkbox } from '../components/Checkbox';
+import { api } from '../lib/axios'
+import { Header } from '../components/Header'
+import { Checkbox } from '../components/Checkbox'
+import { Loading } from '../components/Loading'
+import { generateProgressPercentage } from '../utils/generate-progress-percentage'
+import { HomeworksEmpty } from '../components/HomeworksEmpty'
+
+interface DayInfoProps {
+    completedHomeworks: string[];
+    possibleHomeworks: {
+        id: string,
+        title: string,
+    }[]
+}
 
 export function Day() {
-    const { navigate } = useNavigation();
-    
-    const dayOfWeek = dayjs().format('dddd');
-    const dayAndMonth = dayjs().format('DD/MM');
+    const [ loading, setLoading ] = useState(true)
+    const [ dayInfo, setDayInfo ] = useState<DayInfoProps | null>(null)
+    const [ completedHomework, setCompletedHomework ] = useState<string[]>([])
+
+    const { navigate } = useNavigation()
+
+    const date = dayjs().format('YYYY-MM-DDTHH:mm:ss.SSS[Z]')
+    const dayOfWeek = dayjs().format('dddd')
+    const dayAndMonth = dayjs().format('DD/MM')
+
+    const homeworkProgress = dayInfo?.possibleHomeworks.length ? generateProgressPercentage(dayInfo.possibleHomeworks.length, completedHomework.length) : 0
+
+    async function fetchHomeworks() {
+        try {
+           setLoading(true)
+
+            const response = await api.get("/day", { params: { date }})
+            
+            setDayInfo(response.data)
+            setCompletedHomework(response.data.completedHomeworks ?? [])
+        } catch (error) {
+            console.log(error)
+            Alert.alert("Ops", "Não foi possível carregar as informações das tarefas.")
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    async function handleToggleHomework(homeworkId: string) {
+        try {
+            await api.patch(`/homeworks/${homeworkId}/toggle`);
+      
+            if (completedHomework?.includes(homeworkId)) {
+              setCompletedHomework(prevState => prevState.filter(homework => homework !== homeworkId));
+            } else {
+                setCompletedHomework(prevState => [...prevState, homeworkId]);
+            }
+          } catch (error) {
+            console.log(error)
+            Alert.alert('Ops', 'Não foi possível atualizar o status da tarefa.')
+          }
+    }
+
+    useFocusEffect(useCallback(() => {
+        fetchHomeworks()
+    }, []))
+
+    if(loading) {
+        return(
+            <Loading />
+        )
+    }
 
     return(
         <View className='flex-1 bg-background pt-6'>
@@ -37,14 +98,25 @@ export function Day() {
                 </View>
 
                 <ProgressBar 
-                progress={0.6} 
+                progress={homeworkProgress} 
                 color='#306D9C'
                 className='justify-center h-3 mx-5 my-6 items-center rounded-md'
                 />
 
-                <Checkbox title='Estudar matematica' />
-                <Checkbox checked title='Estudar geografia' />
-                <Checkbox checked title='Estudar biologia' />
+                <View className='mt-6'>
+                    {
+                        dayInfo?.possibleHomeworks.length  ?
+                        dayInfo?.possibleHomeworks.map(homework => (
+                            <Checkbox 
+                            key={homework.id}
+                            title={homework.title}
+                            checked={completedHomework?.includes(homework.id)}
+                            onPress={() => handleToggleHomework(homework.id)}
+                             />
+                        )) :
+                        <HomeworksEmpty />
+                    }
+                </View>
 
             </ScrollView>
 
