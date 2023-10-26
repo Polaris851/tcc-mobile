@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
-import { TextInput } from 'react-native-paper'
+import {Picker} from '@react-native-picker/picker'
 
 import { Feather } from '@expo/vector-icons';
 import { InputTimePicker } from './InputTimePicker';
@@ -11,8 +11,17 @@ interface Props {
     onDay: Function,
 }
 
+const FieldEnum: { [key: string]: string } =  {
+    Segunda: 'Segunda-Feira',
+    Terça: 'Terça-Feira',
+    Quarta: 'Quarta-Feira',
+    Quinta: 'Quinta-Feira',
+    Sexta: 'Sexta-Feira',
+  }
+
 export function InputDayTime({onTimeStart, onTimeFinish, onDay}: Props) {
     const [dayWeek, setDayWeek] = useState('')
+    const [field, setField] = useState(FieldEnum.Segunda)
 
     function handleTimeStart(dateEvent: string) {
         onTimeStart(dateEvent)
@@ -41,16 +50,17 @@ export function InputDayTime({onTimeStart, onTimeFinish, onDay}: Props) {
                 </TouchableOpacity>
             </View>
             
-            <View className='flex-row my-3 space-x-2'>
-                <TextInput
-                label="Dia da semana"
-                value={dayWeek}
-                onChangeText={dayWeek => handleDay(dayWeek)}
-                className='w-36 h-16 m-0 p-0 bg-background'
-                mode='outlined'
-                outlineColor='#306D9C'
-                activeOutlineColor='#306D9C'
-                />
+            <View className='flex-row my-3'>
+                <TouchableOpacity 
+                className='w-32 h-16 m-1 border border-primary justify-center rounded-lg'>
+                    <Picker
+                    selectedValue={field}
+                    onValueChange={itemValue => setField(itemValue)}>
+                        {Object.keys(FieldEnum).map((key) => (
+                        <Picker.Item key={key} label={FieldEnum[key]} value={key} />
+                        ))}
+                    </Picker>
+                </TouchableOpacity>
 
                 <InputTimePicker title='Começa' onTime={handleTimeStart}/>
 

@@ -7,7 +7,7 @@ interface Props {
 
 export function Header({title}: Props) {
     return(
-        <View className='w-full h-20 bg-primary flex-row justify-center items-center px-5 rounded-b-3xl'>
+        <View className='w-full h-20 bg-primary flex-row justify-center items-center px-5 rounded-b-2xl'>
             <View className='absolute'>
                 <Text className='font-bold text-2xl justify-center text-white'>
                     {title}

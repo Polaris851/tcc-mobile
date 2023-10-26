@@ -10,7 +10,7 @@ export function BackButton({title}: Props) {
     const { goBack } = useNavigation();
 
     return(
-        <View className='w-full h-20 bg-primary flex-row justify-center items-center px-5 rounded-b-3xl'>
+        <View className='w-full h-20 bg-primary flex-row justify-center items-center px-5 rounded-b-2xl'>
             <View className='left-5 absolute'>
                 <TouchableOpacity
                 activeOpacity={0.7}

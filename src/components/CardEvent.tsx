@@ -1,18 +1,22 @@
-import { View, Text, TouchableOpacity} from 'react-native';
-import { Feather } from '@expo/vector-icons'; 
+import { View, Text, TouchableOpacityProps} from 'react-native'
+import { ModalDelete } from './ModalDelete'
 
-interface Props {
+interface Props extends TouchableOpacityProps {
     title: string,
     discipline: string,
     dueDate: string,
 }
 
-export function CardEvent({ title, discipline, dueDate }: Props) {
+export function CardEvent({ title, discipline, dueDate, ...rest  }: Props) {
     return(
-        <View className='w-auto h-16 mt-6 bg-primary flex-row justify-between items-center px-6 rounded-3xl'>
+        <View className='w-auto h-16 mt-6 bg-primary flex-row justify-between items-center px-6 rounded-2xl'>
            <Text className='text-white capitalize'>
                 <Text className='font-bold text-lg'>{title}</Text> - <Text className='text-base'>{discipline}</Text>
             </Text> 
-            <Text className='text-white font-bold text-lg'>{dueDate}</Text>
+            
+            <View className='flex-row items-center'>
+                <Text className='text-white mr-1 font-bold text-lg'>{dueDate}</Text>
+                <ModalDelete title="esse evento" {...rest} />
+            </View>
         </View>
     )}

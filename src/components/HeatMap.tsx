@@ -6,6 +6,7 @@ import { DayHeatMap, DAY_SIZE } from '../components/DayHeatMap'
 import { generateDateRangeFromMonthStartToToday } from '../utils/generate-date-range-from-month-start-to-today'
 
 import dayjs from 'dayjs'
+import { Loading } from './Loading'
 
 const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
 
@@ -17,12 +18,19 @@ interface Props {
     completed: boolean
 }
 
+type SummaryProps = Array<{
+    id: string;
+    date: string;
+    amount: number;
+    completed: number;
+  }>
+
 export function HeatMap() {
     const startDate = dayjs().startOf('month')
     const week = startDate.format('d')
     const numberWeek = Number(week)
     const [loading, setLoading] = useState(true)
-    const [summary, setSummary] = useState(null)
+    const [summary, setSummary] = useState<SummaryProps | null>(null)
 
     const mappedDates = []
     for (let i = 0; i < numberWeek; i++) {
@@ -32,44 +40,25 @@ export function HeatMap() {
     async function fetchData() {
         try {
             setLoading(true)
-            const response = await api.get("/summary");
-            console.log(response.data)
-            calcularEstatisticasTarefas(response.data)
-        } catch (error) {
-            Alert.alert("Ops", "Não foi possivel carregar o sumário de homeworks")
+            const response = await api.get('/summary');
+            setSummary(response.data)
+          } catch (error) {
+            Alert.alert('Ops', 'Não foi possível carregar o sumário de hábitos.')
             console.log(error)
-        } finally {
+          } finally {
             setLoading(false)
-        }
+          }
     }
-
-    function calcularEstatisticasTarefas(dados: Props[]) {
-        const estatisticas = {};
-      
-        dados.forEach(item => {
-          const dataCriacao = new Date(item.created_at);
-          const dataFormatada = dataCriacao.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
-          
-        //   if (!estatisticas[dataFormatada]) {
-        //     estatisticas[dataFormatada] = {
-        //       quantidadeCriadas: 0,
-        //       quantidadeCompletadas: 0
-        //     };
-        //   }
-          
-        //   estatisticas[dataFormatada].quantidadeCriadas++;
-          
-        //   if (item.completed) {
-        //     estatisticas[dataFormatada].quantidadeCompletadas++;
-        //   }
-        });
-      
-        return estatisticas;
-      }
 
     useEffect(() => {
         fetchData()
     }, [])
+
+    if (loading) {
+        return (
+          <Loading />
+        )
+      }
 
     return(
             <View>
@@ -87,12 +76,35 @@ export function HeatMap() {
                     }
                 </View>
 
-                <View className='flex-row flex-wrap'>
+                {
+                summary && (
+                    <View className='flex-row flex-wrap'>
+                    {
+                        monthToDateRange.map(date => {
+                        const dayWithHabits = summary.find(day => {
+                            return dayjs(date).isSame(day.date, 'day')
+                        })
+
+                        return (
+                            <DayHeatMap 
+                            key={date.toISOString()}
+                            date={date}
+                            amountOfHabits={dayWithHabits?.amount}
+                            amountCompleted={dayWithHabits?.completed}
+                            />
+                        )
+                        })
+                    }
+                    </View>
+                )
+                }
+
+                {/* <View className='flex-row flex-wrap'>
                 {   numberWeek > 0 && mappedDates.map((date,i) =>(
                         <View
                         key={`${date}-${i}`}
                         className='m-1'
-                        style={{ width: DAY_SIZE}}
+                        style={{ width: DAY_SIZE }}
                         />))
                 }
                 {   monthToDateRange.map(date =>(
@@ -100,6 +112,6 @@ export function HeatMap() {
                         key={date.toISOString()}
                         /> ))
                 }
-                </View>
+                </View> */}
             </View>
     )}

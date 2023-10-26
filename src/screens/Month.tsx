@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react'
 import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native'
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
-import {Calendar} from 'react-native-calendars'
 import { Feather } from '@expo/vector-icons'
 
 import dayjs from 'dayjs';
@@ -13,14 +12,12 @@ import { Calendars } from '../components/Calendars'
 import { CardEvent } from '../components/CardEvent'
 import { Loading } from '../components/Loading'
 
-interface DayInfoProps {
+type DayInfoProps = Array<{
     id: string,
     title: string,
     discipline: string,
     dueDate: string,
-}
-
-type MyDataArray = DayInfoProps[];
+}>
 
 export function Month() {
     const month = dayjs().format('MMMM')
@@ -29,8 +26,7 @@ export function Month() {
 
     const [selected, setSelected] = useState('')
     const [ loading, setLoading ] = useState(true)
-    const [ dayInfo, setDayInfo ] = useState<MyDataArray | null>(null)
-
+    const [ dayInfo, setDayInfo ] = useState<DayInfoProps | null>(null)
 
     async function fetchEvents() {
         try {
@@ -46,9 +42,21 @@ export function Month() {
         }
     }
 
+    async function handleDeleteEvent(eventId: string) {
+        try {
+            await api.delete(`/monthlyevents/${eventId}`)
+
+            fetchEvents()
+          } catch (error) {
+            console.log(error)
+            Alert.alert('Ops', 'Não foi possível deltar o evento.')
+          }
+    }
+
     useFocusEffect(useCallback(() => {
         fetchEvents()
     }, []))
+
 
     if(loading) {
         return(
@@ -66,9 +74,9 @@ export function Month() {
 
                 <SliderButton />
 
-               {/* <Calendars /> */}
+               <Calendars />
 
-                <View className='bg-sky-100 px-5 py-6 h-screen'>
+                <View className='bg-secondary px-5 pt-6 pb-36 mt-5'>
                     <View className='flex-row justify-between items-center'>
                         <Text className='text-lg font-bold'>Eventos</Text>
 
@@ -91,9 +99,9 @@ export function Month() {
                         title={a.title}
                         discipline={a.discipline}
                         dueDate={dayjs(a.dueDate).format('DD/MM')}
+                        onPress={() => handleDeleteEvent(a.id)}
                         />
                     ))
-
                 }
                 </View> 
             </ScrollView>
