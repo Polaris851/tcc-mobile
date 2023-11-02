@@ -31,8 +31,8 @@ export function DateTimePicker({title, onDate}: Props) {
     return(
         <TouchableOpacity 
         className='w-auto h-12 mt-6 border border-primary justify-center rounded-lg'
+        activeOpacity={0.7}
         onPress={showDateSelector} >
-
             <Text className='text-center text-primary text-md font-bold '>
                 { selectedDate != "" ?
                 `${title}: ${selectedDate}` : title}

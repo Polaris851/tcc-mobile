@@ -1,5 +1,5 @@
-import { View, Text, TouchableOpacity} from 'react-native';
-import { Feather } from '@expo/vector-icons'; 
+import { View, Text, TouchableOpacity} from 'react-native'
+import { Feather } from '@expo/vector-icons'
 
 interface Props {
     title: string,

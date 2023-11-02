@@ -1,40 +1,56 @@
 import { useState } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
-import {Picker} from '@react-native-picker/picker'
+import { Feather } from '@expo/vector-icons'
+import { Picker } from '@react-native-picker/picker'
 
-import { Feather } from '@expo/vector-icons';
-import { InputTimePicker } from './InputTimePicker';
+import { InputTimePicker } from './InputTimePicker'
 
-interface Props {
-    onTimeStart: Function,
-    onTimeFinish: Function,
-    onDay: Function,
-}
-
-const FieldEnum: { [key: string]: string } =  {
+const DayWeekEnum: { [key: string]: string } =  {
     Segunda: 'Segunda-Feira',
-    Terça: 'Terça-Feira',
+    Terca: 'Terça-Feira',
     Quarta: 'Quarta-Feira',
     Quinta: 'Quinta-Feira',
     Sexta: 'Sexta-Feira',
-  }
+}
 
-export function InputDayTime({onTimeStart, onTimeFinish, onDay}: Props) {
-    const [dayWeek, setDayWeek] = useState('')
-    const [field, setField] = useState(FieldEnum.Segunda)
+export interface InputDayTimeData {
+    dayOfWeek: string,
+    startTime: string;
+    endTime: string; 
+}
 
-    function handleTimeStart(dateEvent: string) {
-        onTimeStart(dateEvent)
+interface Props {
+    onChange?: (inputDayTimeData: InputDayTimeData[]) => void;
+}
+
+export function InputDayTime({onChange}: Props) {
+    const [datesAndTimes, setDatesAndTimes] = useState<InputDayTimeData[]>([{ dayOfWeek: DayWeekEnum.Segunda, startTime: '', endTime: '' },])
+
+    const addDateAndTime = () => {
+        setDatesAndTimes([...datesAndTimes, { dayOfWeek: DayWeekEnum.Segunda, startTime: '', endTime: '' }]);
     }
 
-    function handleTimeFinish(dateEvent: string) {
-        onTimeFinish(dateEvent)
-    }
-
-    function handleDay(dateEvent: string) {
-        onDay(dateEvent)
-    }
+    const updateDate = (date: string, index: number) => {
+        const updatedDatesAndTimes = [...datesAndTimes]
+        updatedDatesAndTimes[index].dayOfWeek = date
+        setDatesAndTimes(updatedDatesAndTimes)
+        onChange?.(datesAndTimes);
+      };
     
+      const updateTimeStart = (time: string, index: number) => {
+        const updatedDatesAndTimes = [...datesAndTimes]
+        updatedDatesAndTimes[index].startTime = time
+        setDatesAndTimes(updatedDatesAndTimes)
+        onChange?.(datesAndTimes);
+      };
+    
+      const updateTimeFinish = (time: string, index: number) => {
+        const updatedDatesAndTimes = [...datesAndTimes]
+        updatedDatesAndTimes[index].endTime = time
+        setDatesAndTimes(updatedDatesAndTimes)
+        onChange?.(datesAndTimes);
+      };
+
     return(
         <View>
             <View className='flex-row mt-6 justify-between items-center'>
@@ -42,30 +58,43 @@ export function InputDayTime({onTimeStart, onTimeFinish, onDay}: Props) {
 
                 <TouchableOpacity
                 activeOpacity={0.7}
-                >
+                onPress={addDateAndTime}>
                     <Feather 
                     name="plus-circle" 
                     size={22} 
                     color="black" />
                 </TouchableOpacity>
             </View>
-            
-            <View className='flex-row my-3'>
-                <TouchableOpacity 
-                className='w-32 h-16 m-1 border border-primary justify-center rounded-lg'>
-                    <Picker
-                    selectedValue={field}
-                    onValueChange={itemValue => setField(itemValue)}>
-                        {Object.keys(FieldEnum).map((key) => (
-                        <Picker.Item key={key} label={FieldEnum[key]} value={key} />
+
+            {datesAndTimes.map((dateAndTime, index) => (
+                <View className='flex-row my-3' key={index}>
+                    <TouchableOpacity 
+                    className='w-32 h-16 m-1 border border-primary justify-center rounded-lg'
+                    activeOpacity={0.7} >
+                        <Picker 
+                        selectedValue={dateAndTime.dayOfWeek} 
+                        onValueChange={itemValue => updateDate(itemValue, index)}>
+                        {Object.keys(DayWeekEnum).map((key) => (
+                            <Picker.Item key={key} label={DayWeekEnum[key]} value={key} />
                         ))}
-                    </Picker>
-                </TouchableOpacity>
+                        </Picker>
+                    </TouchableOpacity>
 
-                <InputTimePicker title='Começa' onTime={handleTimeStart}/>
+                    <InputTimePicker
+                        title='Começa'
+                        onTime={(time: string) => {
+                            updateTimeStart(time, index)
+                        }}
+                    />
 
-                <InputTimePicker title='Termina' onTime={handleTimeFinish}/>
+                    <InputTimePicker
+                        title='Termina'
+                        onTime={(time: string) => {
+                            updateTimeFinish(time, index)
+                        }}
+                    />
 
-            </View>
+                </View>
+            ))}
         </View>
     )}

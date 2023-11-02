@@ -1,5 +1,5 @@
-import { View, Text, TouchableOpacity} from 'react-native';
-import { Feather } from '@expo/vector-icons'; 
+import { View, Text, TouchableOpacity} from 'react-native'
+import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 
 interface Props {
@@ -7,7 +7,7 @@ interface Props {
 }
 
 export function BackButton({title}: Props) {
-    const { goBack } = useNavigation();
+    const { goBack } = useNavigation()
 
     return(
         <View className='w-full h-20 bg-primary flex-row justify-center items-center px-5 rounded-b-2xl'>

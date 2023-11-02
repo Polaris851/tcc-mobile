@@ -1,13 +1,14 @@
 import { useState } from 'react'
-import { Modal, StyleSheet, Text, Pressable, View, TouchableOpacityProps } from 'react-native';
+import { Modal, StyleSheet, Text, View, TouchableOpacityProps, TouchableOpacity } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 
 interface Props extends TouchableOpacityProps {
     title: string,
+    color: string,
 }
 
-export function ModalDelete({ title, ...rest }: Props) {
-    const [modalVisible, setModalVisible] = useState(false);
+export function DeleteModal({ title, color, ...rest }: Props) {
+    const [modalVisible, setModalVisible] = useState(false)
 
     return(
     <View>
@@ -26,27 +27,30 @@ export function ModalDelete({ title, ...rest }: Props) {
                 color="black" />
               <Text className="text-center text-xl m-5">Deseja excluir {title}?</Text>
               <View className='flex-row space-x-2 items-center'>
-                <Pressable
+                <TouchableOpacity
                     className='bg-primary w-32 p-4 rounded-xl'
+                    activeOpacity={0.7}
                     {...rest}>
                     <Text className='text-white text-center font-bold'>Excluir</Text>
-                </Pressable>
-                <Pressable
+                </TouchableOpacity>
+                <TouchableOpacity
                     className='border-2 w-32 border-primary p-4 rounded-xl'
-                    onPress={() => setModalVisible(!modalVisible)}>
+                    onPress={() => setModalVisible(!modalVisible)} 
+                    activeOpacity={0.7}>
                     <Text className='text-primary text-center font-bold'>Cancelar</Text>
-                </Pressable>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
         </Modal>
-        <Pressable
-          onPress={() => setModalVisible(true)}>
+        <TouchableOpacity
+          onPress={() => setModalVisible(true)}
+          activeOpacity={0.7}>
             <Feather 
             name="trash" 
             size={20} 
-            color="white" />
-        </Pressable>
+            color={color} />
+        </TouchableOpacity>
       </View>
     )}
 

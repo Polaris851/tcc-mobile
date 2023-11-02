@@ -1,12 +1,22 @@
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { Feather } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons'
 
 import dayjs from 'dayjs'
+import clsx from "clsx"
 
 import { Header } from '../components/Header'
 import { SliderButton } from '../components/SliderButton'
 import { CardDiscipline } from '../components/CardDiscipline'
+import { CardDayWeek } from '../components/CardDayWeek'
+
+const DayWeekEnum: { [key: string]: string } =  {
+    Segunda: 'Segunda-Feira',
+    Terca: 'Terça-Feira',
+    Quarta: 'Quarta-Feira',
+    Quinta: 'Quinta-Feira',
+    Sexta: 'Sexta-Feira',
+}
 
 const FieldEnum: { [key: string]: string } =  {
     Matematica: 'Matemática',
@@ -14,18 +24,19 @@ const FieldEnum: { [key: string]: string } =  {
     Humanas: 'Ciências Humanas',
     Linguagens: 'Linguagens',
     Tecnico: 'Técnico',
-  }
+}
 
 export function Week() {
     const currentMonth = dayjs().format('MMMM')
     const currentDate = dayjs().format('DD ddd')
-    const currentDay = dayjs().day()
-    const lastSunday = dayjs().day(-1)
-    const startDate = lastSunday.add(currentDay, 'day')
-
+    const lastSunday = dayjs().day(0);
+    const startDate = lastSunday;
+    
     const daysOfWeek = [];
+    
     for (let i = 0; i < 7; i++) {
-        daysOfWeek.push(startDate.add(i, 'day').format('DD ddd'))
+      const day = startDate.add(i, 'day');
+      daysOfWeek.push(day.format('DD ddd'));
     }
 
     const { navigate } = useNavigation()
@@ -42,57 +53,70 @@ export function Week() {
                 <View className='flex-row my-6 justify-center'>
                     {
                         daysOfWeek.map((weekDay, i) => (
-                            currentDate == weekDay ? <View 
-                            key={`${weekDay}-${i}`}
-                            className='border-2 border-primary w-12 h-16 m-1 rounded-lg'>
-                                <Text className='text-base p-1 text-primary font-semibold text-center'>
-                                    {weekDay}
-                                </Text>
-                            </View> : <View 
-                            key={`${weekDay}-${i}`}
-                            className='bg-primary w-12 h-16 m-1 rounded-lg'>
-                                <Text className='text-base p-1 text-white font-semibold text-center'>
+                            <View 
+                                key={`${weekDay}-${i}`}
+                                className={clsx('w-12 h-16 m-1 rounded-lg',
+                                { ['border-2 border-primary'] : currentDate == weekDay},
+                                { ['bg-primary'] : currentDate != weekDay} )}
+                            >
+                                <Text className={clsx('text-base p-1 font-semibold text-center',
+                                    { ['text-primary'] : currentDate == weekDay},
+                                    { ['text-white'] : currentDate != weekDay},
+                                )}>
                                     {weekDay}
                                 </Text>
                             </View>
                         ))
                     }
                 </View> 
-
+                    
                 <View className='flex-row justify-between items-center mx-5 my-4'>
                     <Text className='text-lg font-bold'>Semana</Text>
 
                     <TouchableOpacity
-                    activeOpacity={0.7}
-                    onPress={() => navigate('formweek')}
+                        activeOpacity={0.7}
+                        onPress={() => navigate('formweek')}
                     >
                         <Feather 
-                        name="plus-circle" 
-                        size={22} 
-                        color="black" />
+                            name="plus-circle" 
+                            size={22} 
+                            color="black" 
+                        />
                     </TouchableOpacity>
                 </View>
 
-                <View className='bg-secondary px-5 py-6 h-auto'>
+                {  
+                    Object.keys(DayWeekEnum).map(key => (
+                        <CardDayWeek
+                            key={key}
+                            title={DayWeekEnum[key]}
+                            titleEnum={key}
+                        />
+                    ))
+                }
+
+                <View className='bg-secondary mt-4 px-5 py-6 h-auto'>
                     <View className='flex-row justify-between items-center'>
                         <Text className='text-lg font-bold'>Matérias</Text>
 
                         <TouchableOpacity
-                        activeOpacity={0.7}
-                        onPress={() => navigate('formclass')}
+                            activeOpacity={0.7}
+                            onPress={() => navigate('formclass')}
                         >
                             <Feather 
-                            name="plus-circle" 
-                            size={22} 
-                            color="black" />
+                                name="plus-circle" 
+                                size={22} 
+                                color="black" 
+                            />
                         </TouchableOpacity>
                     </View>
+                    
                     {
                         Object.keys(FieldEnum).map(key => (
                             <CardDiscipline 
-                            key={key}
-                            field={FieldEnum[key]}
-                            FieldEnum={key}
+                                key={key}
+                                field={FieldEnum[key]}
+                                FieldEnum={key}
                             />
                         ))
                     }

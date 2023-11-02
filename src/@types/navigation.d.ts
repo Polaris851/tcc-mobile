@@ -9,6 +9,8 @@ export declare global {
             formweek: undefined,
             formevent: undefined,
             formclass: undefined,
+            login: undefined,
+            register: undefined,
         }
     }
 }

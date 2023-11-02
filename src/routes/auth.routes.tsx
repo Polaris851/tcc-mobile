@@ -8,11 +8,10 @@ const AuthStack = createNativeStackNavigator();
 export function AuthRoutes() {
     return(
         <AuthStack.Navigator screenOptions={{ headerShown: false }}>
-             <AuthStack.Screen
-            name='Login'
+            <AuthStack.Screen
+            name='login'
             component={SignIn}
             />
-
         </AuthStack.Navigator>
     )
 }

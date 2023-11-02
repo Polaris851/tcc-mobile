@@ -1,9 +1,11 @@
-import { Text, TouchableOpacity, View, StyleSheet} from 'react-native';
+import { Text, TouchableOpacity, View, StyleSheet} from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 
 export function SliderButton() {
-    const { navigate } = useNavigation();
-    const route = useRoute();
+    const { navigate } = useNavigation()
+
+    const route = useRoute()
+    
     return(
         <View
         className='flex-row my-2 items-center justify-center mx-5 bg-sky-100 h-16 w-auto rounded-2xl'

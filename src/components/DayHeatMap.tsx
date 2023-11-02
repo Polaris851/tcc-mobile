@@ -1,25 +1,27 @@
-import { TouchableOpacity, Dimensions, TouchableOpacityProps} from 'react-native';
-import { generateProgressPercentage } from "../utils/generate-progress-percentage";
-import dayjs from "dayjs";
-import clsx from "clsx";
+import { TouchableOpacity, Dimensions, TouchableOpacityProps} from 'react-native'
 
-const WEEK_DAYS = 7;
-const SCREEN_HORIZONTAL_PADDING = (32 * 2) / 5;
-export const DAY_MARGIN_BETWEEN = 7;
-export const DAY_SIZE = (Dimensions.get('screen').width / WEEK_DAYS) - (SCREEN_HORIZONTAL_PADDING + 2);
+import dayjs from "dayjs"
+import clsx from "clsx"
+
+import { generateProgressPercentage } from "../utils/generate-progress-percentage"
+
+const WEEK_DAYS = 7
+const SCREEN_HORIZONTAL_PADDING = (32 * 2) / 5
+export const DAY_MARGIN_BETWEEN = 7
+export const DAY_SIZE = (Dimensions.get('screen').width / WEEK_DAYS) - (SCREEN_HORIZONTAL_PADDING + 2)
 
 
 interface Props extends TouchableOpacityProps {
-    amountOfHabits?: number;
-    amountCompleted?: number;
-    date: Date;
+    amountOfHabits?: number,
+    amountCompleted?: number,
+    date: Date,
   }
 
 export function DayHeatMap({ amountOfHabits = 0, amountCompleted = 0, date, ...rest }: Props) {
     const amountAccomplished = amountOfHabits > 0 ? generateProgressPercentage(amountOfHabits, amountCompleted) : 0
     const amountAccomplishedPercentage = Math.round(amountAccomplished * 100);
-    const today = dayjs().startOf('day').toDate();
-    const isCurrentDay = dayjs(date).isSame(today);
+    const today = dayjs().startOf('day').toDate()
+    const isCurrentDay = dayjs(date).isSame(today)
 
     return(
         <TouchableOpacity 

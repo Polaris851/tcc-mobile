@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Calendar, LocaleConfig} from 'react-native-calendars';
+import React, {useState} from 'react'
+import {Calendar, LocaleConfig} from 'react-native-calendars'
 
 LocaleConfig.locales['fr'] = {
   monthNames: [
@@ -20,12 +20,12 @@ LocaleConfig.locales['fr'] = {
   dayNames: ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'],
   dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
   today: "Hoje"
-};
+}
 
-LocaleConfig.defaultLocale = 'fr';
+LocaleConfig.defaultLocale = 'fr'
 
 export function  Calendars() {
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState('')
 
   return (
     <Calendar
@@ -36,5 +36,5 @@ export function  Calendars() {
         [selected]: {selected: true, disableTouchEvent: true}
       }}
     />
-  );
-};
+  )
+}

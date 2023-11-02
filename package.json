@@ -29,7 +29,8 @@
     "react-native-modal-datetime-picker": "^17.1.0",
     "react-native-paper": "^5.10.1",
     "react-native-picker-select": "^8.1.0",
-    "react-native-screens": "~3.22.0"
+    "react-native-screens": "~3.22.0",
+    "react-native-week-view": "^0.30.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

@@ -88,8 +88,7 @@ export function Day() {
                     
                     <TouchableOpacity
                     activeOpacity={0.7}
-                    onPress={() => navigate('formday')}
-                    >
+                    onPress={() => navigate('formday')}>
                         <Feather 
                         name="plus-circle" 
                         size={22} 
@@ -100,8 +99,7 @@ export function Day() {
                 <ProgressBar 
                 progress={homeworkProgress} 
                 color='#306D9C'
-                className='justify-center h-3 mx-5 my-6 items-center rounded-md'
-                />
+                className='justify-center h-3 mx-5 my-6 items-center rounded-md'/>
 
                 <View className='mt-6'>
                     {

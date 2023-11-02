@@ -37,8 +37,8 @@ export function InputTimePicker({ title, onTime}: Props) {
     return(
         <TouchableOpacity 
         className='w-24 h-16 m-1 border border-primary justify-center rounded-lg'
-        onPress={showTimeSelector} >
-
+        activeOpacity={0.7}
+        onPress={showTimeSelector}>
             <Text className='text-center text-primary text-md font-bold '>
                 { selectedTime != "" ?
                 `${title}: ${selectedTime}` : title}

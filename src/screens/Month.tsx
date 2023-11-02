@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native'
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import { Feather } from '@expo/vector-icons'
 
-import dayjs from 'dayjs';
+import dayjs from 'dayjs'
 
 import { api } from '../lib/axios'
 import { Header } from '../components/Header'
@@ -12,7 +12,7 @@ import { Calendars } from '../components/Calendars'
 import { CardEvent } from '../components/CardEvent'
 import { Loading } from '../components/Loading'
 
-type DayInfoProps = Array<{
+type EventInfoProps = Array<{
     id: string,
     title: string,
     discipline: string,
@@ -24,16 +24,15 @@ export function Month() {
 
     const { navigate } = useNavigation()
 
-    const [selected, setSelected] = useState('')
     const [ loading, setLoading ] = useState(true)
-    const [ dayInfo, setDayInfo ] = useState<DayInfoProps | null>(null)
+    const [ eventInfo, setEventInfo ] = useState<EventInfoProps | null>(null)
 
     async function fetchEvents() {
         try {
            setLoading(true)
 
             const response = await api.get("/events")
-            setDayInfo(response.data)
+            setEventInfo(response.data)
         } catch (error) {
             console.log(error)
             Alert.alert("Ops", "Não foi possível carregar as informações dos eventos.")
@@ -49,7 +48,7 @@ export function Month() {
             fetchEvents()
           } catch (error) {
             console.log(error)
-            Alert.alert('Ops', 'Não foi possível deltar o evento.')
+            Alert.alert('Ops', 'Não foi possível excluir o evento.')
           }
     }
 
@@ -93,13 +92,13 @@ export function Month() {
 
                     
                 {
-                    dayInfo?.map(a => (
+                    eventInfo?.map(event => (
                         <CardEvent 
-                        key={a.id}
-                        title={a.title}
-                        discipline={a.discipline}
-                        dueDate={dayjs(a.dueDate).format('DD/MM')}
-                        onPress={() => handleDeleteEvent(a.id)}
+                        key={event.id}
+                        title={event.title}
+                        discipline={event.discipline}
+                        dueDate={dayjs(event.dueDate).format('DD/MM')}
+                        onPress={() => handleDeleteEvent(event.id)}
                         />
                     ))
                 }

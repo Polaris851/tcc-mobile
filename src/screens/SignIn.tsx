@@ -1,10 +1,13 @@
-import { useState } from 'react';
-import { View, Text} from 'react-native';
-import { TextInput, Button } from 'react-native-paper';
+import { useState } from 'react'
+import { View, Text} from 'react-native'
+import { TextInput, Button } from 'react-native-paper'
+import { useNavigation } from "@react-navigation/native"
 
 export function SignIn() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const { navigate } = useNavigation()
+
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
 
     return(
         <View className="flex-1 bg-background justify-center px-8">
@@ -17,7 +20,7 @@ export function SignIn() {
             label="Email"
             value={email}
             onChangeText={email => setEmail(email)}
-            className='w-80 bg-background my-2'
+            className='w-auto bg-background my-2'
             mode='outlined'
             outlineColor='#306D9C'
             activeOutlineColor='#306D9C'
@@ -27,7 +30,7 @@ export function SignIn() {
             label="Senha"
             value={password}
             onChangeText={password => setPassword(password)}
-            className='w-80 bg-background my-2'
+            className='w-auto bg-background my-2'
             mode='outlined'
             outlineColor='#306D9C'
             activeOutlineColor='#306D9C'
@@ -35,16 +38,21 @@ export function SignIn() {
             right={<TextInput.Icon icon="eye" />}
             />
 
-            <View className="items-center m-8 space-y-2">
                 <Button 
-                onPress={() => console.log('Pressed')}
-                mode="contained" 
-                className='w-80 h-12 bg-primary justify-center'
+                    onPress={() => console.log('Pressed')}
+                    mode="contained" 
+                    className='w-auto h-12 my-2 bg-primary justify-center rounded-lg'
                 >
                     Entrar
                 </Button>
-                <Text className="font-regular text-sm">Não tem uma conta? Cadastre-se</Text>
-            </View>
+
+                <Text className="font-regular text-sm">Não tem uma conta? {' '}
+                    <Text
+                    className="text-primary text-base underline active:text-secondary"
+                    onPress={() => navigate('register')}>
+                        Cadastre-se    
+                    </Text>
+                </Text>
 
         </View>
     )
