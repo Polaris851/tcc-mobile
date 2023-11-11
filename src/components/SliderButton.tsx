@@ -1,5 +1,8 @@
-import { Text, TouchableOpacity, View, StyleSheet} from 'react-native'
+import { Text, TouchableOpacity, View} from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
+import Animated, { SlideOutRight } from 'react-native-reanimated'
+
+import clsx from "clsx"
 
 export function SliderButton() {
     const { navigate } = useNavigation()
@@ -14,28 +17,21 @@ export function SliderButton() {
             activeOpacity={0.7}
             onPress={() => navigate('month')}
             >
-                <View className='w-40 mx-2 justify-center' style={route.name == 'month' && styles.slider}>
-                    <Text className='text-xl font-bold text-center' style={route.name == 'month' && styles.valueText}>Mês</Text>
+                <View className={clsx('w-40 mx-2 justify-center',
+                                { ['h-12 bg-primary rounded-2xl'] : route.name == 'month'})}>
+                    <Text className={clsx('text-xl font-bold text-center',
+                                { ['text-white'] : route.name == 'month'})}>Mês</Text>
                 </View>
             </TouchableOpacity>
             <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => navigate('week')}
             >
-                <View className='mx-2 w-40 justify-center' style={route.name == 'week' && styles.slider}>
-                    <Text className='text-xl font-bold text-center' style={route.name == 'week' && styles.valueText}>Semana</Text>
-                </View>
+                <Animated.View className={clsx('w-40 mx-2 justify-center',
+                                { ['h-12 bg-primary rounded-2xl'] : route.name == 'week'})}>
+                    <Text className={clsx('text-xl font-bold text-center',
+                                { ['text-white'] : route.name == 'week'})}>Semana</Text>
+                </Animated.View>
             </TouchableOpacity>
         </View>
     )}
-
-    const styles = StyleSheet.create({
-        slider: {
-          height: '70%',
-          backgroundColor: '#306D9C',
-          borderRadius: 12,
-        },
-        valueText: {
-            color: '#fff'
-        },
-      });

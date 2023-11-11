@@ -9,35 +9,16 @@ import { Header } from '../components/Header'
 import { SliderButton } from '../components/SliderButton'
 import { CardDiscipline } from '../components/CardDiscipline'
 import { CardDayWeek } from '../components/CardDayWeek'
+import { MonthCurrent } from '../components/MonthCurrent'
 
-const DayWeekEnum: { [key: string]: string } =  {
-    Segunda: 'Segunda-Feira',
-    Terca: 'Terça-Feira',
-    Quarta: 'Quarta-Feira',
-    Quinta: 'Quinta-Feira',
-    Sexta: 'Sexta-Feira',
-}
+import { FieldEnum } from './FormClass'
+import { DayWeekEnum } from '../components/InputDayTime'
+import { generateDateRangeFromWeekCurrent } from '../utils/generate-date-range-from-week-current'
 
-const FieldEnum: { [key: string]: string } =  {
-    Matematica: 'Matemática',
-    Naturezas: 'Ciências da Natureza',
-    Humanas: 'Ciências Humanas',
-    Linguagens: 'Linguagens',
-    Tecnico: 'Técnico',
-}
+const daysOfWeek = generateDateRangeFromWeekCurrent()
 
 export function Week() {
-    const currentMonth = dayjs().format('MMMM')
     const currentDate = dayjs().format('DD ddd')
-    const lastSunday = dayjs().day(0);
-    const startDate = lastSunday;
-    
-    const daysOfWeek = [];
-    
-    for (let i = 0; i < 7; i++) {
-      const day = startDate.add(i, 'day');
-      daysOfWeek.push(day.format('DD ddd'));
-    }
 
     const { navigate } = useNavigation()
 
@@ -46,7 +27,7 @@ export function Week() {
             <Header title='Caléndario'/>
 
             <ScrollView showsVerticalScrollIndicator={false}>
-                <Text className='text-lg font-bold pt-6 px-5 uppercase'>{currentMonth}</Text>
+                <MonthCurrent />
 
                 <SliderButton />
 

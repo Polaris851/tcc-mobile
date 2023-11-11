@@ -11,6 +11,7 @@ import { SliderButton } from '../components/SliderButton'
 import { Calendars } from '../components/Calendars'
 import { CardEvent } from '../components/CardEvent'
 import { Loading } from '../components/Loading'
+import { MonthCurrent } from '../components/MonthCurrent'
 
 type EventInfoProps = Array<{
     id: string,
@@ -20,8 +21,6 @@ type EventInfoProps = Array<{
 }>
 
 export function Month() {
-    const month = dayjs().format('MMMM')
-
     const { navigate } = useNavigation()
 
     const [ loading, setLoading ] = useState(true)
@@ -69,7 +68,7 @@ export function Month() {
 
             <ScrollView 
             showsVerticalScrollIndicator={false}>
-                <Text className='text-lg font-bold pt-6 px-5 uppercase'>{month}</Text>
+                <MonthCurrent />
 
                 <SliderButton />
 

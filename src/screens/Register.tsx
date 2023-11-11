@@ -1,13 +1,15 @@
 import { useState } from 'react'
-import { View, Text, TouchableOpacity} from 'react-native'
+import { View, Text, TouchableOpacity, Alert } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 import { Picker } from '@react-native-picker/picker'
 import { useNavigation } from "@react-navigation/native"
 
-const CursoEnum: { [key: string]: string } =  {
+import { api } from '../lib/axios'
+
+const CourseEnum: { [key: string]: string } =  {
     Quimica: 'Química',
     Mecatronica: 'Mecatrônica',
-    Redes: 'Redes de Computadores',
+    Redes: 'Redes',
 }
 
 export function Register() {
@@ -16,7 +18,36 @@ export function Register() {
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [curso, setCurso] = useState(CursoEnum.Quimica)
+    const [course, setCourse] = useState(CourseEnum.Redes)
+
+    async function handleSaveUser() {
+        try {
+            if(!name.trim() || !email.trim() || !password.trim()) {
+                Alert.alert("Login", "Informe os seus dados para concluir o cadastro.")
+                return
+            }
+            
+            await api.post("/create", {
+                name, 
+                email, 
+                password,
+                course
+            })
+
+            setName("")
+            setEmail("")
+            setPassword("")
+
+            Alert.alert("Login", "Seu cadastro foi realizado!", [{ 
+                text: "OK", 
+                onPress: () => { navigate('login')} 
+            }])
+            
+        } catch (error) {
+            console.log(error)
+            Alert.alert("Ops", "Não foi possível criar seu cadastro.")
+        }
+    }
 
     return(
         <View className="flex-1 bg-background justify-center px-8">
@@ -26,13 +57,13 @@ export function Register() {
             </View>
 
             <TextInput
-            label="Nome"
-            value={name}
-            onChangeText={name => setName(name)}
-            className='w-auto bg-background my-2'
-            mode='outlined'
-            outlineColor='#306D9C'
-            activeOutlineColor='#306D9C'
+                label="Nome"
+                value={name}
+                onChangeText={name => setName(name)}
+                className='w-auto bg-background my-2'
+                mode='outlined'
+                outlineColor='#306D9C'
+                activeOutlineColor='#306D9C'
             />
 
             <TouchableOpacity 
@@ -40,40 +71,40 @@ export function Register() {
                     activeOpacity={0.7}
                 >
                     <Picker
-                        selectedValue={curso}
-                        onValueChange={itemValue => setCurso(itemValue)}
+                        selectedValue={course}
+                        onValueChange={itemValue => setCourse(itemValue)}
                     >
-                        {Object.keys(CursoEnum).map((key) => (
-                        <Picker.Item key={key} label={CursoEnum[key]} value={key} />
+                        {Object.keys(CourseEnum).map((key) => (
+                        <Picker.Item key={key} label={CourseEnum[key]} value={key} />
                         ))}
                     </Picker>
                 </TouchableOpacity>
 
 
             <TextInput
-            label="Email"
-            value={email}
-            onChangeText={email => setEmail(email)}
-            className='w-auto bg-background my-2'
-            mode='outlined'
-            outlineColor='#306D9C'
-            activeOutlineColor='#306D9C'
+                label="Email"
+                value={email}
+                onChangeText={email => setEmail(email)}
+                className='w-auto bg-background my-2'
+                mode='outlined'
+                outlineColor='#306D9C'
+                activeOutlineColor='#306D9C'
             />
 
             <TextInput
-            label="Senha"
-            value={password}
-            onChangeText={password => setPassword(password)}
-            className='w-auto bg-background my-2'
-            mode='outlined'
-            outlineColor='#306D9C'
-            activeOutlineColor='#306D9C'
-            secureTextEntry
-            right={<TextInput.Icon icon="eye" />}
+                label="Senha"
+                value={password}
+                onChangeText={password => setPassword(password)}
+                className='w-auto bg-background my-2'
+                mode='outlined'
+                outlineColor='#306D9C'
+                activeOutlineColor='#306D9C'
+                secureTextEntry
+                right={<TextInput.Icon icon="eye" />}
             />
 
             <Button 
-                onPress={() => console.log('Pressed')}
+                onPress={handleSaveUser}
                 mode="contained" 
                 className='w-auto h-12 my-2 bg-primary justify-center rounded-lg'
             >

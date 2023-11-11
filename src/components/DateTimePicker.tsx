@@ -8,16 +8,16 @@ interface Props {
 }
 
 export function DateTimePicker({title, onDate}: Props) {
-    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-    const [selectedDate, setSelectedDate] = useState('');
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
+    const [selectedDate, setSelectedDate] = useState('')
 
     function showDateSelector() {
       setDatePickerVisibility(true);
-    };
+    }
   
     function hideDateSelector() {
       setDatePickerVisibility(false);
-    };
+    }
   
     function handleDateSelection(date: Date) {
         const dateISOString = date.toISOString();
@@ -26,7 +26,7 @@ export function DateTimePicker({title, onDate}: Props) {
 
         setSelectedDate(formattedDate);
         hideDateSelector();
-    };
+    }
 
     return(
         <TouchableOpacity 

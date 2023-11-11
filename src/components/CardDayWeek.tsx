@@ -99,9 +99,9 @@ export function CardDayWeek({ title, titleEnum,  ...rest}: Props) {
             </TouchableOpacity>
             { isVisible && week?.discipline.map(discipline => (
                 discipline.times.some((time) => time.dayOfWeek == titleEnum) &&
-                <View className='bg-secondary rounded-2xl py-2 px-5 h-16 m-1 flex-row justify-between items-center'>
+                <View className='bg-secondary rounded-2xl py-2 px-5 h-16 m-1 flex-row justify-between items-center' key={discipline.id}>
                     <View>
-                        <Text className='capitalize font-bold text-base' key={discipline.id}>{discipline.discipline}</Text>
+                        <Text className='capitalize font-bold text-base'>{discipline.discipline}</Text>
                         {discipline.times.map((time, index) => (
                             time.dayOfWeek == titleEnum &&
                             <View className='flex-row space-x-2' key={`${index}-${time}`}>
@@ -119,9 +119,9 @@ export function CardDayWeek({ title, titleEnum,  ...rest}: Props) {
             ))}
             { isVisible && week?.weekActivity.map(activity => (
                 activity.times.some((time) => time.dayOfWeek == titleEnum) &&
-                <View className='bg-secondary rounded-2xl py-2 px-5 h-16 m-1 flex-row justify-between items-center'>
+                <View className='bg-secondary rounded-2xl py-2 px-5 h-16 m-1 flex-row justify-between items-center' key={activity.id}>
                     <View>
-                        <Text className='capitalize font-bold text-base' key={activity.id}>{activity.title}</Text>
+                        <Text className='capitalize font-bold text-base'>{activity.title}</Text>
                         {activity.times.map((time, index) => (
                             time.dayOfWeek == titleEnum &&
                             <View className='flex-row space-x-2' key={`${index}-${time}`}>

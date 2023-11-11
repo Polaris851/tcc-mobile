@@ -12,6 +12,10 @@ export function AuthRoutes() {
             name='login'
             component={SignIn}
             />
+            <AuthStack.Screen
+            name='register'
+            component={Register}
+            />
         </AuthStack.Navigator>
     )
 }

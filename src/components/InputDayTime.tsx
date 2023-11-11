@@ -5,7 +5,7 @@ import { Picker } from '@react-native-picker/picker'
 
 import { InputTimePicker } from './InputTimePicker'
 
-const DayWeekEnum: { [key: string]: string } =  {
+export const DayWeekEnum: { [key: string]: string } =  {
     Segunda: 'Segunda-Feira',
     Terca: 'Terça-Feira',
     Quarta: 'Quarta-Feira',
@@ -24,10 +24,10 @@ interface Props {
 }
 
 export function InputDayTime({onChange}: Props) {
-    const [datesAndTimes, setDatesAndTimes] = useState<InputDayTimeData[]>([{ dayOfWeek: DayWeekEnum.Segunda, startTime: '', endTime: '' },])
+    const [datesAndTimes, setDatesAndTimes] = useState<InputDayTimeData[]>([{ dayOfWeek: 'Segunda', startTime: '', endTime: '' },])
 
     const addDateAndTime = () => {
-        setDatesAndTimes([...datesAndTimes, { dayOfWeek: DayWeekEnum.Segunda, startTime: '', endTime: '' }]);
+        setDatesAndTimes([...datesAndTimes, { dayOfWeek: 'Segunda', startTime: '', endTime: '' }]);
     }
 
     const updateDate = (date: string, index: number) => {

@@ -8,7 +8,7 @@ import { api } from '../lib/axios'
 import { BackButton } from '../components/BackButton'
 import { InputDayTime, InputDayTimeData } from '../components/InputDayTime'
 
-const FieldEnum: { [key: string]: string } =  {
+export const FieldEnum: { [key: string]: string } =  {
     Matematica: 'Matemática',
     Naturezas: 'Ciências da Natureza',
     Humanas: 'Ciências Humanas',
@@ -21,7 +21,7 @@ export function FormClass() {
 
     const [discipline, setDiscipline] = useState("")
     const [disciplineTimes, setDisciplineTimes] = useState<InputDayTimeData[]>([])
-    const [field, setField] = useState(FieldEnum.Matematica)
+    const [field, setField] = useState('Matematica')
 
     async function handleCreateNewDiscipline() {
         try {
@@ -29,7 +29,7 @@ export function FormClass() {
                 Alert.alert("Matérias", "Informe os dados das matérias.")
                 return
             }
-
+            console.log(field)
             await api.post("/disciplines", {
                 discipline,
                 field,
@@ -37,7 +37,7 @@ export function FormClass() {
             })
             
             setDiscipline("")
-            setField(FieldEnum.Matematica)
+            setField('Matematica')
 
             Alert.alert("Matérias", "Matéria criada com sucesso!", [{ text: "OK", onPress: () => { navigate('week')} }])
         } catch (error) {

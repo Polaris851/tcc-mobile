@@ -9,10 +9,12 @@ import { User } from '../components/User'
 import { DayHeatMap, DAY_SIZE } from '../components/DayHeatMap'
 import { generateDateRangeFromMonthStartToToday } from '../utils/generate-date-range-from-month-start-to-today'
 import { Loading } from '../components/Loading'
+import { MonthCurrent } from '../components/MonthCurrent'
+import { generateDateRangeFromStartWeek } from '../utils/generate-date-range-from-start-week'
 
 const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
-
 const monthToDateRange  = generateDateRangeFromMonthStartToToday()
+const mappedDates = generateDateRangeFromStartWeek()
 
 type SummaryProps = Array<{
     id: string,
@@ -22,18 +24,9 @@ type SummaryProps = Array<{
   }>
 
 export function Profile() {
-    const month = dayjs().format('MMMM')
-    const startDate = dayjs().startOf('month')
-    const week = startDate.format('d')
-    const numberWeek = Number(week)
     const [loading, setLoading] = useState(true)
     const [summary, setSummary] = useState<SummaryProps | null>(null)
-
-    const mappedDates = []
-    for (let i = 0; i < numberWeek; i++) {
-      mappedDates.push(i)
-    }
-
+    
     async function fetchData() {
         try {
             setLoading(true)
@@ -66,9 +59,8 @@ export function Profile() {
             showsVerticalScrollIndicator={false}>
                 <User />
 
-                <Text className='text-lg font-bold pt-6 uppercase'>{month}</Text>
-                
-                <View>
+                <MonthCurrent />
+            
                     <View className='flex-row mt-6 mb-2'>
                         {
                             weekDays.map((weekDay, i) => (
@@ -82,37 +74,37 @@ export function Profile() {
                             ))
                         }
                     </View>
-                    {
-                    summary && (
-                        <View className='flex-row flex-wrap'>
-                            {   numberWeek > 0 && mappedDates.map((date,i) =>(
-                                    <View
-                                        key={`${date}-${i}`}
-                                        className='m-1'
-                                        style={{ width: DAY_SIZE }}
-                                    />
-                                ))
-                        }
-                        {
-                            monthToDateRange.map(date => {
-                                const dayWithHabits = summary.find(day => {
-                                    return dayjs(date).isSame(day.date, 'day')
-                                })
 
-                                return (
-                                    <DayHeatMap 
-                                        key={date.toISOString()}
-                                        date={date}
-                                        amountOfHabits={dayWithHabits?.amount}
-                                        amountCompleted={dayWithHabits?.completed}
-                                    />
-                                )
-                            })
-                        }
-                        </View>
-                    )
+                    {
+                        summary && (
+                            <View className='flex-row flex-wrap'>
+                                {   mappedDates.map((date,i) =>(
+                                        <View
+                                            key={`${date}-${i}`}
+                                            className='m-1'
+                                            style={{ width: DAY_SIZE }}
+                                        />
+                                    ))
+                            }
+                            {
+                                monthToDateRange.map(date => {
+                                    const dayWithHabits = summary.find(day => {
+                                        return dayjs(date).isSame(day.date, 'day')
+                                    })
+
+                                    return (
+                                        <DayHeatMap 
+                                            key={date.toISOString()}
+                                            date={date}
+                                            amountOfHabits={dayWithHabits?.amount}
+                                            amountCompleted={dayWithHabits?.completed}
+                                        />
+                                    )
+                                })
+                            }
+                            </View>
+                        )
                     }
-                </View>
                 
             </ScrollView>
         </View>

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Modal, StyleSheet, Text, View, TouchableOpacityProps, TouchableOpacity } from 'react-native'
+import { Modal, Text, View, TouchableOpacityProps, TouchableOpacity } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 
 interface Props extends TouchableOpacityProps {
@@ -20,7 +20,7 @@ export function DeleteModal({ title, color, ...rest }: Props) {
             setModalVisible(!modalVisible);
           }}>
           <View className='align-center justify-center flex-1'>
-            <View className='bg-white rounded-xl items-center m-10 p-10' style={styles.modalView}>
+            <View className='bg-white rounded-xl items-center m-10 p-10 shadow-xl'>
                 <Feather 
                 name="trash" 
                 size={36} 
@@ -53,16 +53,3 @@ export function DeleteModal({ title, color, ...rest }: Props) {
         </TouchableOpacity>
       </View>
     )}
-
-    const styles = StyleSheet.create({
-        modalView: {
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 4,
-          elevation: 5,
-        },
-      });

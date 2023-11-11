@@ -5,6 +5,8 @@ import { useFonts, Inter_700Bold, Inter_600SemiBold, Inter_400Regular } from '@e
 
 import { Loading } from './src/components/Loading';
 import { Routes } from './src/routes';
+import { AuthProvider } from './src/context/Auth';
+import { NavigationContainer } from '@react-navigation/native';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -20,9 +22,11 @@ export default function App() {
   }
 
   return (
-    <>
-      <Routes />
-      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
-    </>
+    <NavigationContainer>
+      <AuthProvider>
+        <Routes />
+        <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
+      </AuthProvider>
+    </NavigationContainer>
   );
 }

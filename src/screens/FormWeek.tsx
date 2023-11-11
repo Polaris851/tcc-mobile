@@ -12,7 +12,7 @@ export function FormWeek() {
 
     const [title, setTitle] = useState("")
     const [weekActivityTimes, setWeekActivityTimes] = useState<InputDayTimeData[]>([])
-    const [description, setDescription] = useState('')
+    const [description, setDescription] = useState("")
 
     async function handleCreateNewWeekActivity() {
         try {
@@ -21,11 +21,6 @@ export function FormWeek() {
                 return
             }
             
-            console.log( {
-                title, 
-                description, 
-                weekActivityTimes
-            })
             await api.post("/weeklyactivities", {
                 title, 
                 description, 
