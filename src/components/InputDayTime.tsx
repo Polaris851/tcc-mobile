@@ -15,41 +15,41 @@ export const DayWeekEnum: { [key: string]: string } =  {
 
 export interface InputDayTimeData {
     dayOfWeek: string,
-    startTime: string;
-    endTime: string; 
+    startTime: string,
+    endTime: string,
 }
 
 interface Props {
-    onChange?: (inputDayTimeData: InputDayTimeData[]) => void;
+    onChange?: (inputDayTimeData: InputDayTimeData[]) => void,
 }
 
 export function InputDayTime({onChange}: Props) {
     const [datesAndTimes, setDatesAndTimes] = useState<InputDayTimeData[]>([{ dayOfWeek: 'Segunda', startTime: '', endTime: '' },])
 
     const addDateAndTime = () => {
-        setDatesAndTimes([...datesAndTimes, { dayOfWeek: 'Segunda', startTime: '', endTime: '' }]);
+        setDatesAndTimes([...datesAndTimes, { dayOfWeek: 'Segunda', startTime: '', endTime: '' }])
     }
 
     const updateDate = (date: string, index: number) => {
         const updatedDatesAndTimes = [...datesAndTimes]
         updatedDatesAndTimes[index].dayOfWeek = date
         setDatesAndTimes(updatedDatesAndTimes)
-        onChange?.(datesAndTimes);
-      };
+        onChange?.(datesAndTimes)
+      }
     
       const updateTimeStart = (time: string, index: number) => {
         const updatedDatesAndTimes = [...datesAndTimes]
         updatedDatesAndTimes[index].startTime = time
         setDatesAndTimes(updatedDatesAndTimes)
-        onChange?.(datesAndTimes);
-      };
+        onChange?.(datesAndTimes)
+      }
     
       const updateTimeFinish = (time: string, index: number) => {
         const updatedDatesAndTimes = [...datesAndTimes]
         updatedDatesAndTimes[index].endTime = time
         setDatesAndTimes(updatedDatesAndTimes)
-        onChange?.(datesAndTimes);
-      };
+        onChange?.(datesAndTimes)
+      }
 
     return(
         <View>

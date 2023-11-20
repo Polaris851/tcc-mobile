@@ -30,7 +30,7 @@ export function Profile() {
     async function fetchData() {
         try {
             setLoading(true)
-            const response = await api.get('/summary');
+            const response = await api.get('/summary')
             setSummary(response.data)
           } catch (error) {
             Alert.alert('Ops', 'Não foi possível carregar o sumário de hábitos.')

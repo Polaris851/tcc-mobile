@@ -21,7 +21,7 @@ type DisciplineInfoProps = Array<{
 export function CardDiscipline({ field, FieldEnum }: Props) {
     const [ disciplineInfo, setDisciplineInfo ] = useState<DisciplineInfoProps | null>(null)
     const [ loading, setLoading ] = useState(true)
-    const [ isVisible, setIsVisible ] = useState(false);
+    const [ isVisible, setIsVisible ] = useState(false)
 
     function toggleVisibility() {
       setIsVisible(!isVisible)

@@ -8,7 +8,7 @@ export function User() {
 
     return(
         <View className='flex-row items-center justify-between'>
-            <View className='flex-row items-center pt-6 space-x-4'>
+            <View className='pt-6'>
                 <Text className='text-lg font-bold'>{user?.name ?? ""}</Text>
                 <View className='flex-row space-x-2'>
                     <Text className='text-base font-bold'>Curso:</Text>

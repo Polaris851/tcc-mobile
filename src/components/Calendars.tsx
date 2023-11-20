@@ -30,7 +30,7 @@ export function  Calendars() {
   return (
     <Calendar
       onDayPress={day => {
-        setSelected(day.dateString);
+        setSelected(day.dateString)
       }}
       markedDates={{
         [selected]: {selected: true, disableTouchEvent: true}

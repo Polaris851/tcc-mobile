@@ -1,20 +1,20 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { MaterialIcons } from '@expo/vector-icons'; 
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { MaterialIcons } from '@expo/vector-icons'
 
-const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator()
+const Stack = createNativeStackNavigator()
 
-import { Profile } from '../screens/Profile';
+import { Profile } from '../screens/Profile'
 
-import { Day } from '../screens/Day';
-import { FormDay } from '../screens/FormDay';
+import { Day } from '../screens/Day'
+import { FormDay } from '../screens/FormDay'
 
-import { Month } from '../screens/Month';
-import { Week } from '../screens/Week';
-import { FormWeek } from '../screens/FormWeek';
-import { FormEvent } from '../screens/FormEvent';
-import { FormClass } from '../screens/FormClass';
+import { Month } from '../screens/Month'
+import { Week } from '../screens/Week'
+import { FormWeek } from '../screens/FormWeek'
+import { FormEvent } from '../screens/FormEvent'
+import { FormClass } from '../screens/FormClass'
 
 export function DayStack() {
     return(

@@ -1,6 +1,5 @@
 import { Text, TouchableOpacity, View} from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import Animated, { SlideOutRight } from 'react-native-reanimated'
 
 import clsx from "clsx"
 
@@ -27,11 +26,11 @@ export function SliderButton() {
             activeOpacity={0.7}
             onPress={() => navigate('week')}
             >
-                <Animated.View className={clsx('w-40 mx-2 justify-center',
+                <View className={clsx('w-40 mx-2 justify-center',
                                 { ['h-12 bg-primary rounded-2xl'] : route.name == 'week'})}>
                     <Text className={clsx('text-xl font-bold text-center',
                                 { ['text-white'] : route.name == 'week'})}>Semana</Text>
-                </Animated.View>
+                </View>
             </TouchableOpacity>
         </View>
     )}

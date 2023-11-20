@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Alert } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 import { Picker } from '@react-native-picker/picker'
 import { useNavigation } from "@react-navigation/native"
+import { Feather } from '@expo/vector-icons'
 
 import { api } from '../lib/axios'
 
@@ -19,7 +20,11 @@ export function Register() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [course, setCourse] = useState(CourseEnum.Redes)
+    const [ isVisible, setIsVisible ] = useState(false)
 
+    function toggleVisibility() {
+      setIsVisible(!isVisible)
+    }
     async function handleSaveUser() {
         try {
             if(!name.trim() || !email.trim() || !password.trim()) {
@@ -99,8 +104,12 @@ export function Register() {
                 mode='outlined'
                 outlineColor='#306D9C'
                 activeOutlineColor='#306D9C'
-                secureTextEntry
-                right={<TextInput.Icon icon="eye" />}
+                secureTextEntry={ isVisible }
+                right={
+                    <TextInput.Icon 
+                        icon={() => <Feather name={isVisible ? "eye-off" : "eye"} size={20} color='black' />} 
+                        onPress={toggleVisibility}             
+                    />} 
             />
 
             <Button 

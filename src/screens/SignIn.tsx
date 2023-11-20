@@ -3,13 +3,19 @@ import { View, Text} from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 import { useNavigation } from "@react-navigation/native"
 import { useAuth } from '../context/Auth'
+import { Feather } from '@expo/vector-icons'
 
 export function SignIn() {
     const { navigate } = useNavigation()
+    const { signIn, signed } = useAuth()
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const { signIn, signed } = useAuth();
+    const [ isVisible, setIsVisible ] = useState(false)
+
+    function toggleVisibility() {
+      setIsVisible(!isVisible)
+    }
 
     async function handleSignIn() {
         await signIn({ email, password})
@@ -43,9 +49,13 @@ export function SignIn() {
                 mode='outlined'
                 outlineColor='#306D9C'
                 activeOutlineColor='#306D9C'
-                secureTextEntry
-                right={<TextInput.Icon icon="eye" />}
-                />
+                secureTextEntry={ isVisible }
+                right={
+                    <TextInput.Icon 
+                        icon={() => <Feather name={isVisible ? "eye-off" : "eye"} size={20} color='black' />} 
+                        onPress={toggleVisibility}             
+                    />
+                } />
 
                     <Button 
                         onPress={handleSignIn}

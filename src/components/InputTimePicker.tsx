@@ -24,8 +24,8 @@ export function InputTimePicker({ title, onTime}: Props) {
 
         const formattedTime = new Date(timeISOString)
 
-        const hours = formattedTime.getHours();
-        const minutes = formattedTime.getMinutes();
+        const hours = formattedTime.getHours()
+        const minutes = formattedTime.getMinutes()
         const formattedTimeStr = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`
     
         onTime(formattedTimeStr)

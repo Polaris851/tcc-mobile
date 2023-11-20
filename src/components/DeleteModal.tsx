@@ -17,10 +17,10 @@ export function DeleteModal({ title, color, ...rest }: Props) {
           transparent={true}
           visible={modalVisible}
           onRequestClose={() => {
-            setModalVisible(!modalVisible);
+            setModalVisible(!modalVisible)
           }}>
           <View className='align-center justify-center flex-1'>
-            <View className='bg-white rounded-xl items-center m-10 p-10 shadow-xl'>
+            <View className='bg-white border-2 border-primary rounded-xl items-center m-10 p-10 shadow-xl'>
                 <Feather 
                 name="trash" 
                 size={36} 

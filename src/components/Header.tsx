@@ -1,5 +1,6 @@
-import { View, Text, TouchableOpacity} from 'react-native'
-import { Feather } from '@expo/vector-icons'
+import { View, Text } from 'react-native'
+
+import { NotificationModal } from './NotificationModal'
 
 interface Props {
     title: string,
@@ -15,14 +16,8 @@ export function Header({title}: Props) {
             </View>
 
             <View className='right-5 absolute'>
-                <TouchableOpacity
-                activeOpacity={0.7}
-                >
-                    <Feather 
-                    name="bell" 
-                    size={22} 
-                    color="white" />
-                </TouchableOpacity>
+                <NotificationModal />
             </View>
+        
         </View>
     )}

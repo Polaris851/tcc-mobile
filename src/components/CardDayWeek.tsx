@@ -14,8 +14,8 @@ interface Props  {
 }
   
 interface WeekProps {
-    weekActivity: WeekActivity[];
-    discipline: Discipline[];
+    weekActivity: WeekActivity[]
+    discipline: Discipline[]
 }
 
 type Time = {
@@ -39,7 +39,7 @@ type Discipline = {
 export function CardDayWeek({ title, titleEnum,  ...rest}: Props) {
     const [ week, setWeek] = useState<WeekProps | null>(null)
     const [ loading, setLoading ] = useState(true)
-    const [ isVisible, setIsVisible ] = useState(false);
+    const [ isVisible, setIsVisible ] = useState(false)
 
     function toggleVisibility() {
       setIsVisible(!isVisible)

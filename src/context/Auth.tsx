@@ -1,8 +1,8 @@
 import { useContext, createContext, useEffect, useState } from "react"
 import { api } from "../lib/axios"
 import { Alert } from "react-native"
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useNavigation } from "@react-navigation/native"
 
 type Login = {
     email: string,
@@ -10,15 +10,15 @@ type Login = {
 }
 
 interface AuthState {
-    signed: boolean;
-    signIn: (data: Login) => void;
-    signOut: () => void;
-    user: any;
+    signed: boolean,
+    signIn: (data: Login) => void,
+    signOut: () => void,
+    user: any,
 }
 
-export const AuthContext = createContext<AuthState>(undefined!);
+export const AuthContext = createContext<AuthState>(undefined!)
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => useContext(AuthContext)
 
 export function AuthProvider(props: any) {
     const { navigate } = useNavigation()
@@ -29,41 +29,40 @@ export function AuthProvider(props: any) {
             const storageUser = await AsyncStorage.getItem("@Auth:user")
             const storageToken = await AsyncStorage.getItem("@Auth:token")
             if(storageUser && storageToken) {
-                setUser(JSON.parse(storageUser));
+                setUser(JSON.parse(storageUser))
 
                 api.defaults.headers.common[
                     "Authorization"
-                ] = `Bearer ${storageToken}`;
+                ] = `Bearer ${storageToken}`
             }
         }
 
-        fetchAuthData();
+        fetchAuthData()
     }, [])
 
     async function signIn({email, password}: Login) {
         const response = await api.post("/auth", {
             email,
             password
-        });
+        })
 
         if(response.data.error) {
             Alert.alert(response.data.error)
         } else {
-            const { token, user } = response.data;
-            setUser(user);
+            const { token, user } = response.data
+            setUser(user)
             api.defaults.headers.common[
                 "Authorization"
-            ] = `Bearer ${token}`;
+            ] = `Bearer ${token}`
 
-            await AsyncStorage.setItem("@Auth:token", token);
-            await AsyncStorage.setItem("@Auth:user", JSON.stringify(user));
+            await AsyncStorage.setItem("@Auth:token", token)
+            await AsyncStorage.setItem("@Auth:user", JSON.stringify(user))
         }
     }
 
     const signOut = async () => {
-        await AsyncStorage.clear();
-        setUser(null);
-        // navigate("login");
+        await AsyncStorage.clear()
+        setUser(null)
     }
 
     return (

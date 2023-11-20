@@ -14,7 +14,7 @@ import { generateProgressPercentage } from '../utils/generate-progress-percentag
 import { HomeworksEmpty } from '../components/HomeworksEmpty'
 
 interface DayInfoProps {
-    completedHomeworks: string[];
+    completedHomeworks: string[],
     possibleHomeworks: {
         id: string,
         title: string,
@@ -52,12 +52,12 @@ export function Day() {
 
     async function handleToggleHomework(homeworkId: string) {
         try {
-            await api.patch(`/homeworks/${homeworkId}/toggle`);
+            await api.patch(`/homeworks/${homeworkId}/toggle`)
       
             if (completedHomework?.includes(homeworkId)) {
-              setCompletedHomework(prevState => prevState.filter(homework => homework !== homeworkId));
+              setCompletedHomework(prevState => prevState.filter(homework => homework !== homeworkId))
             } else {
-                setCompletedHomework(prevState => [...prevState, homeworkId]);
+                setCompletedHomework(prevState => [...prevState, homeworkId])
             }
           } catch (error) {
             console.log(error)

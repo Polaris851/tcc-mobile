@@ -12,20 +12,20 @@ export function DateTimePicker({title, onDate}: Props) {
     const [selectedDate, setSelectedDate] = useState('')
 
     function showDateSelector() {
-      setDatePickerVisibility(true);
+      setDatePickerVisibility(true)
     }
   
     function hideDateSelector() {
-      setDatePickerVisibility(false);
+      setDatePickerVisibility(false)
     }
   
     function handleDateSelection(date: Date) {
-        const dateISOString = date.toISOString();
+        const dateISOString = date.toISOString()
         onDate(dateISOString)
-        const formattedDate = new Date(dateISOString).toLocaleDateString('pt-BR'); 
+        const formattedDate = new Date(dateISOString).toLocaleDateString('pt-BR') 
 
-        setSelectedDate(formattedDate);
-        hideDateSelector();
+        setSelectedDate(formattedDate)
+        hideDateSelector()
     }
 
     return(
