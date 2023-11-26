@@ -2,7 +2,6 @@ import { useContext, createContext, useEffect, useState } from "react"
 import { api } from "../lib/axios"
 import { Alert } from "react-native"
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useNavigation } from "@react-navigation/native"
 
 type Login = {
     email: string,
@@ -21,7 +20,6 @@ export const AuthContext = createContext<AuthState>(undefined!)
 export const useAuth = () => useContext(AuthContext)
 
 export function AuthProvider(props: any) {
-    const { navigate } = useNavigation()
     const [user, setUser] = useState(null)
 
     useEffect(() => {

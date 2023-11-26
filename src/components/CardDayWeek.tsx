@@ -2,10 +2,12 @@ import { useState, useCallback } from 'react'
 import { useFocusEffect } from '@react-navigation/native'
 import { View, Text, TouchableOpacity, Alert } from 'react-native'
 import { Feather } from '@expo/vector-icons'
+import Animated, { ZoomIn} from "react-native-reanimated"
 
 import dayjs from 'dayjs'
 
 import { api } from '../lib/axios'
+import { Loading } from './Loading'
 import { DeleteModal } from './DeleteModal'
 
 interface Props  {
@@ -14,8 +16,8 @@ interface Props  {
 }
   
 interface WeekProps {
-    weekActivity: WeekActivity[]
-    discipline: Discipline[]
+    weekActivity: WeekActivity[];
+    discipline: Discipline[];
 }
 
 type Time = {
@@ -39,7 +41,7 @@ type Discipline = {
 export function CardDayWeek({ title, titleEnum,  ...rest}: Props) {
     const [ week, setWeek] = useState<WeekProps | null>(null)
     const [ loading, setLoading ] = useState(true)
-    const [ isVisible, setIsVisible ] = useState(false)
+    const [ isVisible, setIsVisible ] = useState(false);
 
     function toggleVisibility() {
       setIsVisible(!isVisible)
@@ -85,6 +87,12 @@ export function CardDayWeek({ title, titleEnum,  ...rest}: Props) {
         fetchWeek()
     }, []))
 
+    if(loading) {
+        return(
+            <Loading />
+        )
+    }
+
     return(
         <View className='w-auto h-auto mx-5 justify-center'>
             <TouchableOpacity 
@@ -97,9 +105,13 @@ export function CardDayWeek({ title, titleEnum,  ...rest}: Props) {
                 size={20} 
                 color="#306D9C" />
             </TouchableOpacity>
+
             { isVisible && week?.discipline.map(discipline => (
                 discipline.times.some((time) => time.dayOfWeek == titleEnum) &&
-                <View className='bg-secondary rounded-2xl py-2 px-5 h-16 m-1 flex-row justify-between items-center' key={discipline.id}>
+                <Animated.View 
+                className='bg-secondary rounded-2xl py-2 px-5 h-16 m-1 flex-row justify-between items-center' 
+                key={discipline.id}
+                entering={ZoomIn}>
                     <View>
                         <Text className='capitalize font-bold text-base'>{discipline.discipline}</Text>
                         {discipline.times.map((time, index) => (
@@ -115,11 +127,16 @@ export function CardDayWeek({ title, titleEnum,  ...rest}: Props) {
                     <View>
                         <DeleteModal title="essa disciplina" color="black" onPress={() => handleDeleteDiscipline(discipline.id)} />
                     </View>
-                </View>
-            ))}
+                </Animated.View>
+                ))
+            }
+            
             { isVisible && week?.weekActivity.map(activity => (
                 activity.times.some((time) => time.dayOfWeek == titleEnum) &&
-                <View className='bg-secondary rounded-2xl py-2 px-5 h-16 m-1 flex-row justify-between items-center' key={activity.id}>
+                <Animated.View 
+                className='bg-secondary rounded-2xl py-2 px-5 h-16 m-1 flex-row justify-between items-center' 
+                key={activity.id}
+                entering={ZoomIn}>
                     <View>
                         <Text className='capitalize font-bold text-base'>{activity.title}</Text>
                         {activity.times.map((time, index) => (
@@ -135,7 +152,9 @@ export function CardDayWeek({ title, titleEnum,  ...rest}: Props) {
                     <View>
                         <DeleteModal title="essa atividade" color="black" onPress={() => handleDeleteActivity(activity.id)} />
                     </View>
-                </View>
-            ))}
+                </Animated.View>
+                ))
+            }
+
         </View>
     )}

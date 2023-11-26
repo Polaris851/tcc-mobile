@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useCallback } from 'react'
 import { View, Text, ScrollView, Alert} from 'react-native'
+import { useFocusEffect } from '@react-navigation/native'
 
 import dayjs from 'dayjs'
 
@@ -26,7 +27,7 @@ type SummaryProps = Array<{
 export function Profile() {
     const [loading, setLoading] = useState(true)
     const [summary, setSummary] = useState<SummaryProps | null>(null)
-    
+
     async function fetchData() {
         try {
             setLoading(true)
@@ -40,9 +41,9 @@ export function Profile() {
           }
     }
 
-    useEffect(() => {
+    useFocusEffect(useCallback(() => {
         fetchData()
-    }, [])
+    }, []));
 
     if (loading) {
         return (

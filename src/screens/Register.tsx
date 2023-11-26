@@ -20,7 +20,7 @@ export function Register() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [course, setCourse] = useState(CourseEnum.Redes)
-    const [ isVisible, setIsVisible ] = useState(false)
+    const [ isVisible, setIsVisible ] = useState(true)
 
     function toggleVisibility() {
       setIsVisible(!isVisible)

@@ -11,7 +11,7 @@ export function SignIn() {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [ isVisible, setIsVisible ] = useState(false)
+    const [ isVisible, setIsVisible ] = useState(true)
 
     function toggleVisibility() {
       setIsVisible(!isVisible)

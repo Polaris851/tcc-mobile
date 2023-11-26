@@ -13,12 +13,14 @@ import { Loading } from '../components/Loading'
 import { generateProgressPercentage } from '../utils/generate-progress-percentage'
 import { HomeworksEmpty } from '../components/HomeworksEmpty'
 
+export interface HomeworkDto {
+    id: string;
+    title?: string;
+} 
+
 interface DayInfoProps {
-    completedHomeworks: string[],
-    possibleHomeworks: {
-        id: string,
-        title: string,
-    }[]
+    completedHomeworks: HomeworkDto[],
+    possibleHomeworks: HomeworkDto[]
 }
 
 export function Day() {
@@ -38,10 +40,10 @@ export function Day() {
         try {
            setLoading(true)
 
-            const response = await api.get("/day", { params: { date }})
+            const response = await api.get<DayInfoProps>("/day", { params: { date }})
             
             setDayInfo(response.data)
-            setCompletedHomework(response.data.completedHomeworks ?? [])
+            setCompletedHomework(response.data.completedHomeworks.map((homework) => homework?.id));
         } catch (error) {
             console.log(error)
             Alert.alert("Ops", "Não foi possível carregar as informações das tarefas.")
@@ -53,7 +55,7 @@ export function Day() {
     async function handleToggleHomework(homeworkId: string) {
         try {
             await api.patch(`/homeworks/${homeworkId}/toggle`)
-      
+
             if (completedHomework?.includes(homeworkId)) {
               setCompletedHomework(prevState => prevState.filter(homework => homework !== homeworkId))
             } else {
@@ -106,10 +108,10 @@ export function Day() {
                         dayInfo?.possibleHomeworks.length  ?
                         dayInfo?.possibleHomeworks.map(homework => (
                             <Checkbox 
-                            key={homework.id}
-                            title={homework.title}
-                            checked={completedHomework?.includes(homework.id)}
-                            onPress={() => handleToggleHomework(homework.id)}
+                                key={homework.id}
+                                title={homework.title ?? ""}
+                                checked={completedHomework?.includes(homework.id)}
+                                onPress={() => handleToggleHomework(homework.id)}
                              />
                         )) :
                         <HomeworksEmpty />

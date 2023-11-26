@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { Feather } from '@expo/vector-icons'
+import Animated, { ZoomIn, ZoomOut} from "react-native-reanimated"
 
 import dayjs from 'dayjs'
 import clsx from "clsx"

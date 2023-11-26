@@ -29,7 +29,6 @@ export function FormClass() {
                 Alert.alert("Matérias", "Informe os dados das matérias.")
                 return
             }
-            console.log(field)
             await api.post("/disciplines", {
                 discipline,
                 field,
