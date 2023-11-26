@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
 import { View, ScrollView, Alert, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { TextInput, Button } from 'react-native-paper'
@@ -7,6 +8,7 @@ import { Picker } from '@react-native-picker/picker'
 import { api } from '../lib/axios'
 import { BackButton } from '../components/BackButton'
 import { DateTimePicker } from '../components/DateTimePicker'
+import { Loading } from '../components/Loading'
 
 const TitleEnum: { [key: string]: string } =  {
     Prova: 'Prova',
@@ -15,18 +17,27 @@ const TitleEnum: { [key: string]: string } =  {
     Trabalho: 'Trabalho',
 }
 
+type DisciplineInfoProps = Array<{
+    id: string,
+    discipline: string,
+    field: string,
+}>
+
 export function FormEvent() {
     const { navigate } = useNavigation()
 
+    const [ loading, setLoading ] = useState(true)
+    const [ disciplineInfo, setDisciplineInfo ] = useState<DisciplineInfoProps | null>(null)
+
     const [title, setTitle] = useState(TitleEnum.Prova)
-    const [discipline, setDiscipline] = useState("")
+    const [discipline, setDiscipline ] = useState<DisciplineInfoProps>()
     const [dueDate, setDueDate] = useState("")
     const [alertDate, setAlertDate] = useState("")
     const [description, setDescription] = useState("")
 
     async function handleCreateNewEvent() {
         try {
-            if(!title.trim() && !discipline.trim() && !dueDate) {
+            if(!title.trim() && !discipline && !dueDate) {
                 Alert.alert("Eventos", "Informe os dados do evento.")
                 return
             }
@@ -39,10 +50,9 @@ export function FormEvent() {
                 return
             }
 
-            await api.post("/monthlyevents", { title, discipline, dueDate, alertDate, description })
+            await api.post("/monthlyevents", { title, discipline_id: discipline, dueDate, alertDate, description })
 
             setTitle(TitleEnum.Prova)
-            setDiscipline("")
             setDescription("")
 
             Alert.alert("Eventos", "Evento criado com sucesso!", [{ text: "OK", onPress: () => { navigate('month')} }])
@@ -60,6 +70,31 @@ export function FormEvent() {
         setAlertDate(dateEvent)
     }
 
+    async function fetchDisciplines() {
+        try {
+           setLoading(true)
+
+            const response = await api.get("/discipline")
+            setDisciplineInfo(response.data)
+            setDiscipline(response.data?.[0].id ?? undefined)
+        } catch (error) {
+            console.log(error)
+            Alert.alert("Ops", "Não foi possível carregar as informações dos eventos.")
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    useFocusEffect(useCallback(() => {
+        fetchDisciplines()
+    }, []))
+
+    if(loading) {
+        return(
+            <Loading />
+        )
+    }
+    
     return(
         <View className='flex-1 bg-background pt-6'>
             <BackButton title='Eventos' />
@@ -79,15 +114,20 @@ export function FormEvent() {
                     </Picker>
                 </TouchableOpacity>
                 
-                <TextInput
-                label="Matéria"
-                value={discipline}
-                onChangeText={discipline => setDiscipline(discipline)}
-                className='w-auto bg-background'
-                mode='outlined'
-                outlineColor='#306D9C'
-                activeOutlineColor='#306D9C'
-                />
+                <TouchableOpacity 
+                className='w-auto h-12 border border-primary justify-center rounded-lg'
+                activeOpacity={0.7} >
+                    <Picker 
+                    selectedValue={discipline} 
+                    onValueChange={disciplineId => setDiscipline(disciplineId)}>
+                    {   disciplineInfo ?
+                        disciplineInfo.map((discipline) => (
+                            <Picker.Item key={discipline.id} label={discipline.discipline} value={discipline.id} />
+                        )) :
+                        <Picker.Item label="Nenhuma disciplina disponível" value={null} />
+                    }
+                    </Picker>
+                </TouchableOpacity>
 
                 <DateTimePicker title='Data de Entrega' onDate={handleDateEvent} />
                 

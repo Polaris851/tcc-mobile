@@ -13,18 +13,23 @@ import { CardEvent } from '../components/CardEvent'
 import { Loading } from '../components/Loading'
 import { MonthCurrent } from '../components/MonthCurrent'
 
-type EventInfoProps = Array<{
-    id: string,
-    title: string,
-    discipline: string,
-    dueDate: string,
-}>
+interface Event {
+  id: string;
+  title: string;
+  discipline_id: string;
+  dueDate: Date;
+  disciplineTitle: string;
+}
+
+interface EventsMonthProps {
+  eventsMonth: Event[];
+}
 
 export function Month() {
     const { navigate } = useNavigation()
 
     const [ loading, setLoading ] = useState(true)
-    const [ eventInfo, setEventInfo ] = useState<EventInfoProps | null>(null)
+    const [ eventInfo, setEventInfo ] = useState<EventsMonthProps | null>(null)
 
     async function fetchEvents() {
         try {
@@ -91,11 +96,11 @@ export function Month() {
 
                     
                 {
-                    eventInfo?.map(event => (
+                    eventInfo?.eventsMonth?.map(event => (
                         <CardEvent 
                         key={event.id}
                         title={event.title}
-                        discipline={event.discipline}
+                        discipline={event.disciplineTitle}
                         dueDate={dayjs(event.dueDate).format('DD/MM')}
                         onPress={() => handleDeleteEvent(event.id)}
                         />
